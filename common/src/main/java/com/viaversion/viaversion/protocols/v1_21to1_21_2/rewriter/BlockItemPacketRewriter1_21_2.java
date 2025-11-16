@@ -41,10 +41,13 @@ import com.viaversion.viaversion.api.minecraft.item.Item;
 import com.viaversion.viaversion.api.minecraft.item.data.Consumable1_21_2;
 import com.viaversion.viaversion.api.minecraft.item.data.DamageResistant;
 import com.viaversion.viaversion.api.minecraft.item.data.Enchantments;
+import com.viaversion.viaversion.api.minecraft.item.data.EnumTypes;
+import com.viaversion.viaversion.api.minecraft.item.data.Equippable;
 import com.viaversion.viaversion.api.minecraft.item.data.FoodProperties1_20_5;
 import com.viaversion.viaversion.api.minecraft.item.data.FoodProperties1_21_2;
 import com.viaversion.viaversion.api.minecraft.item.data.Instrument1_20_5;
 import com.viaversion.viaversion.api.minecraft.item.data.Instrument1_21_2;
+import com.viaversion.viaversion.api.minecraft.item.data.ItemModel;
 import com.viaversion.viaversion.api.minecraft.item.data.LockCode;
 import com.viaversion.viaversion.api.minecraft.item.data.PotionEffect;
 import com.viaversion.viaversion.api.protocol.packet.PacketWrapper;
@@ -586,6 +589,207 @@ public final class BlockItemPacketRewriter1_21_2 extends StructuredItemRewriter<
             }
             return trim;
         });
+
+        // Modified
+
+        final Integer modelData = dataContainer.get(StructuredDataKey.CUSTOM_MODEL_DATA1_20_5);
+
+        if (modelData == null) return;
+
+        final Integer identifier = item.identifier();
+
+        // DEBUG
+        // final CompoundTag customData = dataContainer.get(StructuredDataKey.CUSTOM_DATA);
+        // if (customData != null) {
+        //     customData.putString("debug_VVitemID_1.21.2", Integer.toString(identifier));
+        // }
+
+        //#region fix armors
+
+        switch (identifier) {
+            case 878: // leather_helmet
+                switch (modelData) {
+                    case 1: setArmor(item, "head", "adept", "adept_1"); break;
+                    case 2: setArmor(item, "head", "medieval", "medieval_1"); break;
+                    case 3: setArmor(item, "head", "scout", "scout_1"); break;
+                    case 4: setArmor(item, "head", "mag1", "mag1_1"); break;
+                    case 5: setArmor(item, "head", "mag2", "mag2_1"); break;
+                    case 6: setArmor(item, "head", "mag3", "mag3_1"); break;
+                    case 22: setArmor(item, "head", "mag4", "mag4_1"); break;
+                    case 300: setArmor(item, "head", "mag5", "mag5_1"); break;
+                    case 7: setArmor(item, "head", "ninja1", "ninja1_1"); break;
+                    case 8: setArmor(item, "head", "ninja2", "ninja2_1"); break;
+                    case 9: setArmor(item, "head", "ninja3", "ninja3_1"); break;
+                    case 21: setArmor(item, "head", "ninja4", "ninja4_1"); break;
+                    case 200: setArmor(item, "head", "ninja5", "ninja5_1"); break;
+                    case 10: setArmor(item, "head", "woj1", "woj1_1"); break;
+                    case 11: setArmor(item, "head", "woj2", "woj2_1"); break;
+                    case 12: setArmor(item, "head", "woj3", "woj3_1"); break;
+                    case 20: setArmor(item, "head", "woj4", "woj4_1"); break;
+                    case 100: setArmor(item, "head", "woj5", "woj5_1"); break;
+                    case 400: setArmor(item, "head", "pvp1", "pvp1_1"); break;
+                    case 401: setArmor(item, "head", "pvp2", "pvp2_1"); break;
+                }
+            break;
+            case 879: // leather_chestplate
+                switch (modelData) {
+                    case 1: setArmor(item, "chest", "adept", "adept_2"); break;
+                    case 2: setArmor(item, "chest", "medieval", "medieval_2"); break;
+                    case 3: setArmor(item, "chest", "scout", "scout_2"); break;
+                    case 4: setArmor(item, "chest", "mag1", "mag1_2"); break;
+                    case 5: setArmor(item, "chest", "mag2", "mag2_2"); break;
+                    case 6: setArmor(item, "chest", "mag3", "mag3_2"); break;
+                    case 22: setArmor(item, "chest", "mag4", "mag4_2"); break;
+                    case 300: setArmor(item, "chest", "mag5", "mag5_2"); break;
+                    case 7: setArmor(item, "chest", "ninja1", "ninja1_2"); break;
+                    case 8: setArmor(item, "chest", "ninja2", "ninja2_2"); break;
+                    case 9: setArmor(item, "chest", "ninja3", "ninja3_2"); break;
+                    case 21: setArmor(item, "chest", "ninja4", "ninja4_2"); break;
+                    case 200: setArmor(item, "chest", "ninja5", "ninja5_2"); break;
+                    case 10: setArmor(item, "chest", "woj1", "woj1_2"); break;
+                    case 11: setArmor(item, "chest", "woj2", "woj2_2"); break;
+                    case 12: setArmor(item, "chest", "woj3", "woj3_2"); break;
+                    case 20: setArmor(item, "chest", "woj4", "woj4_2"); break;
+                    case 100: setArmor(item, "chest", "woj5", "woj5_2"); break;
+                    case 400: setArmor(item, "chest", "pvp1", "pvp1_2"); break;
+                    case 401: setArmor(item, "chest", "pvp2", "pvp2_2"); break;
+                }
+            break;
+            case 880: // leather_leggings
+                switch (modelData) {
+                    case 1: setArmor(item, "legs", "adept", "adept_3"); break;
+                    case 2: setArmor(item, "legs", "medieval", "medieval_3"); break;
+                    case 3: setArmor(item, "legs", "scout", "scout_3"); break;
+                    case 4: setArmor(item, "legs", "mag1", "mag1_3"); break;
+                    case 5: setArmor(item, "legs", "mag2", "mag2_3"); break;
+                    case 6: setArmor(item, "legs", "mag3", "mag3_3"); break;
+                    case 22: setArmor(item, "legs", "mag4", "mag4_3"); break;
+                    case 300: setArmor(item, "legs", "mag5", "mag5_3"); break;
+                    case 7: setArmor(item, "legs", "ninja1", "ninja1_3"); break;
+                    case 8: setArmor(item, "legs", "ninja2", "ninja2_3"); break;
+                    case 9: setArmor(item, "legs", "ninja3", "ninja3_3"); break;
+                    case 21: setArmor(item, "legs", "ninja4", "ninja4_3"); break;
+                    case 200: setArmor(item, "legs", "ninja5", "ninja5_3"); break;
+                    case 10: setArmor(item, "legs", "woj1", "woj1_3"); break;
+                    case 11: setArmor(item, "legs", "woj2", "woj2_3"); break;
+                    case 12: setArmor(item, "legs", "woj3", "woj3_3"); break;
+                    case 20: setArmor(item, "legs", "woj4", "woj4_3"); break;
+                    case 100: setArmor(item, "legs", "woj5", "woj5_3"); break;
+                    case 400: setArmor(item, "legs", "pvp1", "pvp1_3"); break;
+                    case 401: setArmor(item, "legs", "pvp2", "pvp2_3"); break;
+                }
+            break;
+            case 881: // leather_boots
+                switch (modelData) {
+                    case 1: setArmor(item, "feet", "adept", "adept_4"); break;
+                    case 2: setArmor(item, "feet", "medieval", "medieval_4"); break;
+                    case 3: setArmor(item, "feet", "scout", "scout_4"); break;
+                    case 4: setArmor(item, "feet", "mag1", "mag1_4"); break;
+                    case 5: setArmor(item, "feet", "mag2", "mag2_4"); break;
+                    case 6: setArmor(item, "feet", "mag3", "mag3_4"); break;
+                    case 22: setArmor(item, "feet", "mag4", "mag4_4"); break;
+                    case 300: setArmor(item, "feet", "mag5", "mag5_4"); break;
+                    case 7: setArmor(item, "feet", "ninja1", "ninja1_4"); break;
+                    case 8: setArmor(item, "feet", "ninja2", "ninja2_4"); break;
+                    case 9: setArmor(item, "feet", "ninja3", "ninja3_4"); break;
+                    case 21: setArmor(item, "feet", "ninja4", "ninja4_4"); break;
+                    case 200: setArmor(item, "feet", "ninja5", "ninja5_4"); break;
+                    case 10: setArmor(item, "feet", "woj1", "woj1_4"); break;
+                    case 11: setArmor(item, "feet", "woj2", "woj2_4"); break;
+                    case 12: setArmor(item, "feet", "woj3", "woj3_4"); break;
+                    case 20: setArmor(item, "feet", "woj4", "woj4_4"); break;
+                    case 100: setArmor(item, "feet", "woj5", "woj5_4"); break;
+                    case 400: setArmor(item, "feet", "pvp1", "pvp1_4"); break;
+                    case 401: setArmor(item, "feet", "pvp2", "pvp2_4"); break;
+                }
+            break;
+            case 984: // white_dye
+                switch (modelData) {
+                    case 1: setArmor(item, "head", null, "farmer_1"); break;
+                    case 2: setArmor(item, "head", null, "fisherman_1"); break;
+                    case 3: setArmor(item, "head", null, "miner_1"); break;
+                    case 4: setArmor(item, "head", null, "alchemist_1"); break;
+                    case 5: setArmor(item, "head", null, "florist_1"); break;
+                    case 6: setArmor(item, "head", null, "lumberjack_1"); break;
+                }
+            break;
+            case 887: // iron_chestplate
+                switch (modelData) {
+                    case 101: setArmor(item, "chest", "farmer", "farmer_2"); break;
+                    case 102: setArmor(item, "chest", "fisherman", "fisherman_2"); break;
+                    case 103: setArmor(item, "chest", "miner", "miner_2"); break;
+                    case 104: setArmor(item, "chest", "alchemist", "alchemist_2"); break;
+                    case 105: setArmor(item, "chest", "florist", "florist_2"); break;
+                    case 106: setArmor(item, "chest", "lumberjack", "lumberjack_2"); break;
+                }
+            break;
+            case 888: // iron_leggings
+                switch (modelData) {
+                    case 101: setArmor(item, "legs", "farmer", "farmer_3"); break;
+                    case 102: setArmor(item, "legs", "fisherman", "fisherman_3"); break;
+                    case 103: setArmor(item, "legs", "miner", "miner_3"); break;
+                    case 104: setArmor(item, "legs", "alchemist", "alchemist_3"); break;
+                    case 105: setArmor(item, "legs", "florist", "florist_3"); break;
+                    case 106: setArmor(item, "legs", "lumberjack", "lumberjack_3"); break;
+                }
+            break;
+            case 889: // iron_boots
+                switch (modelData) {
+                    case 101: setArmor(item, "feet", "farmer", "farmer_4"); break;
+                    case 102: setArmor(item, "feet", "fisherman", "fisherman_4"); break;
+                    case 103: setArmor(item, "feet", "miner", "miner_4"); break;
+                    case 104: setArmor(item, "feet", "alchemist", "alchemist_4"); break;
+                    case 105: setArmor(item, "feet", "florist", "florist_4"); break;
+                    case 106: setArmor(item, "feet", "lumberjack", "lumberjack_4"); break;
+                }
+            break;
+        }
+        
+        //#endregion
+    }
+
+    private static void setArmor(
+        final Item item,
+        final String slot,
+        final String armor,
+        final String itemModel
+    ) {
+        //#region minecraft:equippable
+        final StructuredDataContainer dataContainer = item.dataContainer();
+
+        String equippableModel = null;
+
+        if (armor != null) {
+            equippableModel = "armor:"+ armor;
+        }
+
+        // Holder.of(new SoundEvent("minecraft:intentionally_empty", null))
+
+        dataContainer.set(
+            StructuredDataKey.EQUIPPABLE1_21_2,
+            new Equippable(
+                EnumTypes.EQUIPMENT_SLOT.idFromName(slot), // equipmentSlot
+                Holder.of(70), // soundEvent, default is 70
+                equippableModel, // model
+                null, // cameraOverlay
+                null, // allowedEntities
+                true, // dispensable
+                true, // swappable
+                true // damageOnHurt
+            )
+        );
+        //#endregion
+
+        //#region minecraft:item_model
+        if (itemModel != null) {
+            dataContainer.set(
+                StructuredDataKey.ITEM_MODEL,
+                new ItemModel(
+                    Key.of("armor", itemModel)
+                )
+            );
+        }
+        //#endregion
     }
 
     public static void downgradeItemData(final Item item) {
