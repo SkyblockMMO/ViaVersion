@@ -17,11 +17,13 @@
  */
 package com.viaversion.viaversion.protocols.v1_21_2to1_21_4.rewriter;
 
+import java.util.Arrays;
 import com.viaversion.nbt.tag.CompoundTag;
 import com.viaversion.nbt.tag.FloatTag;
 import com.viaversion.nbt.tag.IntTag;
 import com.viaversion.nbt.tag.ListTag;
 import com.viaversion.nbt.tag.NumberTag;
+import com.viaversion.nbt.tag.Tag;
 import com.viaversion.viaversion.api.Via;
 import com.viaversion.viaversion.api.connection.UserConnection;
 import com.viaversion.viaversion.api.minecraft.BlockPosition;
@@ -130,16 +132,79 @@ public final class BlockItemPacketRewriter1_21_4 extends StructuredItemRewriter<
         super.handleItemToClient(connection, item);
 
         final StructuredDataContainer dataContainer = item.dataContainer();
+
+        //#region Modified
+        final Integer identifier = item.identifier();
+        final CompoundTag customData = dataContainer.get(StructuredDataKey.CUSTOM_DATA);
+        float[] CustomModelDataFloats = new float[0];
+        String[] CustomModelDataStrings = new String[0];
+
+        if (customData != null) {
+            // Dedupe
+            customData.remove("AttributeModifiers");
+            customData.remove("Enchantments");
+            customData.remove("BlockEntityTag");
+            customData.remove("CustomModelData");
+            customData.remove("Damage");
+            customData.remove("HideFlags");
+            customData.remove("display");
+        
+            // Debug
+            // customData.putString("debug_VVitemID_1.21.4", Integer.toString(identifier));
+        
+            // Copy MMOITEMS_ITEM_ID to CustomModelData
+
+            Tag mmoItemId = customData.get("MMOITEMS_ITEM_ID");
+
+            if (mmoItemId == null) {
+                // try PublicBukkitValues.mcskyblockcore:mmoitemid
+                final CompoundTag publicBukkitValues = customData.getCompoundTag("PublicBukkitValues");
+
+                if (publicBukkitValues != null) {
+                    mmoItemId = publicBukkitValues.get("mcskyblockcore:mmoitemid");
+                }
+            }
+            
+            if (mmoItemId != null) {
+                CustomModelDataStrings = new String[]{mmoItemId.getValue().toString()};
+            }
+
+            // motyki i siekiery
+            if (identifier == 878 || identifier == 862) {
+                Tag typeTag = customData.get("type");
+
+                if (typeTag != null) {
+                    CustomModelDataStrings = Arrays.copyOf(CustomModelDataStrings, CustomModelDataStrings.length + 1);
+                    CustomModelDataStrings[CustomModelDataStrings.length - 1] = typeTag.getValue().toString();
+                }
+            }
+            // wędka
+            if (identifier == 980) {
+                Tag stringBreakTag = customData.get("STRINGBREAKLVL");
+
+                if (stringBreakTag != null) {
+                    CustomModelDataStrings = Arrays.copyOf(CustomModelDataStrings, CustomModelDataStrings.length + 1);
+                    CustomModelDataStrings[CustomModelDataStrings.length - 1] = stringBreakTag.getValue().toString();
+                }
+            }
+        }
+
         final Integer modelData = dataContainer.get(StructuredDataKey.CUSTOM_MODEL_DATA1_20_5);
         if (modelData != null) {
-            dataContainer.set(StructuredDataKey.CUSTOM_MODEL_DATA1_21_4, new CustomModelData1_21_4(
-                new float[]{modelData.floatValue()},
-                new boolean[0],
-                new String[0],
-                new int[0]
-            ));
+            CustomModelDataFloats = new float[]{modelData.floatValue()};
             saveTag(createCustomTag(item), new IntTag(modelData), "custom_model_data");
         }
+
+        if (CustomModelDataFloats.length > 0 || CustomModelDataStrings.length > 0) {
+            dataContainer.set(StructuredDataKey.CUSTOM_MODEL_DATA1_21_4, new CustomModelData1_21_4(
+                CustomModelDataFloats,
+                new boolean[0],
+                CustomModelDataStrings,
+                new int[0]
+            ));
+        }
+
+        //#endregion Modified
 
         updateItemData(item);
 
