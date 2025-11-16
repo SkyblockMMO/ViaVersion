@@ -139,16 +139,7 @@ public final class BlockItemPacketRewriter1_21_4 extends StructuredItemRewriter<
         float[] CustomModelDataFloats = new float[0];
         String[] CustomModelDataStrings = new String[0];
 
-        if (customData != null) {
-            // Dedupe
-            customData.remove("AttributeModifiers");
-            customData.remove("Enchantments");
-            customData.remove("BlockEntityTag");
-            customData.remove("CustomModelData");
-            customData.remove("Damage");
-            customData.remove("HideFlags");
-            customData.remove("display");
-        
+        if (customData != null) {        
             // Debug
             // customData.putString("debug_VVitemID_1.21.4", Integer.toString(identifier));
         
